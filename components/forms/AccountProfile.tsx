@@ -67,12 +67,12 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     }
 
     await updateUser({
-      name: values.name,
-      path: pathname,
-      username: values.username,
       userId: user.id,
+      username: values.username,
+      name: values.name,
       bio: values.bio,
       image: values.profile_photo,
+      path: pathname,
     });
 
     if (pathname === "/profile/edit") {
@@ -142,7 +142,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                   accept="image/*"
                   placeholder="Add profile photo"
                   className="account-form_image-input"
-                  onChange={(e) => handleImage(e, field.onChange)}
+                  // onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
             </FormItem>
