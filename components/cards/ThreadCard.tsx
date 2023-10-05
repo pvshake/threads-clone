@@ -1,7 +1,5 @@
-import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { string } from "zod";
 
 interface Props {
   id: string;
@@ -27,7 +25,7 @@ interface Props {
   isComment?: boolean;
 }
 
-const ThreadCard = ({
+function ThreadCard({
   id,
   currentUserId,
   parentId,
@@ -37,7 +35,7 @@ const ThreadCard = ({
   createdAt,
   comments,
   isComment,
-}: Props) => {
+}: Props) {
   return (
     <article
       className={`flex w-full flex-col rounded-xl ${
@@ -45,12 +43,12 @@ const ThreadCard = ({
       }`}
     >
       <div className="flex items-start justify-between">
-        <div className="flex w-full flex-1 felx-row gap-4">
+        <div className="flex w-full flex-1 flex-row gap-4">
           <div className="flex flex-col items-center">
             <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
               <Image
                 src={author.image}
-                alt="Profile image"
+                alt="user_community_image"
                 fill
                 className="cursor-pointer rounded-full"
               />
@@ -68,7 +66,7 @@ const ThreadCard = ({
 
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
-            <div className="mt-5 flex flex-col gap-3">
+            <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
                 <Image
                   src="/assets/heart-gray.svg"
@@ -105,7 +103,7 @@ const ThreadCard = ({
               {isComment && comments.length > 0 && (
                 <Link href={`/thread/${id}`}>
                   <p className="mt-1 text-subtle-medium text-gray-1">
-                    {comments.length} replies
+                    {comments.length} repl{comments.length > 1 ? "ies" : "y"}
                   </p>
                 </Link>
               )}
@@ -113,8 +111,29 @@ const ThreadCard = ({
           </div>
         </div>
       </div>
+
+      {!isComment && comments.length > 0 && (
+        <div className="ml-1 mt-3 flex items-center gap-2">
+          {comments.slice(0, 2).map((comment, index) => (
+            <Image
+              key={index}
+              src={comment.author.image}
+              alt={`user_${index}`}
+              width={24}
+              height={24}
+              className={`${index !== 0 && "-ml-5"} rounded-full object-cover`}
+            />
+          ))}
+
+          <Link href={`/thread/${id}`}>
+            <p className="mt-1 text-subtle-medium text-gray-1">
+              {comments.length} repl{comments.length > 1 ? "ies" : "y"}
+            </p>
+          </Link>
+        </div>
+      )}
     </article>
   );
-};
+}
 
 export default ThreadCard;
