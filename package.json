@@ -1,6 +1,6 @@
 {
-  "name": "threads",
-  "version": "0.1.0",
+  "name": "threads-clone",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
